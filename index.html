@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trihueco Fast Food - Rapido, Sabroso y al Mejor Precio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E53935',
+                        secondary: '#FFD600',
+                        dark: '#1a1a1a',
+                        accent: '#FF6F00'
+                    },
+                    fontFamily: {
+                        display: ['Bangers', 'cursive'],
+                        body: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+        }
+        .font-display {
+            font-family: 'Bangers', cursive;
+            letter-spacing: 2px;
+        }
+        .bg-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .slider-container {
+            overflow: hidden;
+        }
+        .slider-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .slider-track:hover {
+            animation-play-state: paused;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 214, 0, 0.5), 0 0 20px rgba(255, 214, 0, 0.3);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(229, 57, 53, 0.3);
+        }
+        .bounce-animation {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+        .wiggle-animation {
+            animation: wiggle 2.5s ease-in-out infinite;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 214, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 214, 0, 0.8), 0 0 30px rgba(255, 214, 0, 0.4); }
+        }
+        .cart-badge {
+            animation: pop 0.3s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .mascot-speech {
+            position: relative;
+        }
+        .mascot-speech::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #FFD600;
+        }
+    </style>
+</head>
+<body class="bg-dark bg-pattern min-h-screen text-white">
+    
+    <!-- Floating Cart Button -->
+    <button onclick="toggleCart()" id="floatingCartBtn" class="fixed bottom-6 right-6 z-50 bg-primary hover:bg-red-700 text-white p-4 rounded-full shadow-2xl pulse-glow transition-all duration-300 flex items-center gap-2">
+        <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-secondary text-dark text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+    </button>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-dark border-l border-primary/30 shadow-2xl transform transition-transform duration-300">
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-display text-2xl text-secondary">Tu Pedido</h2>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Mascot in Cart -->
+                <div id="cartEmptyMascot" class="text-center py-4">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-24 h-24 mx-auto object-contain wiggle-animation">
+                    <p class="text-gray-400 mt-2">Agrega algo delicioso!</p>
+                </div>
+                
+                <div id="cartItems" class="flex-1 overflow-y-auto space-y-4">
+                </div>
+                
+                <div class="border-t border-gray-700 pt-4 mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-lg font-semibold">Total:</span>
+                        <span id="cartTotal" class="text-2xl font-display text-secondary">$0</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4 text-center">
+                        <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                        Pedido para retirar en local (Sin Delivery)
+                    </p>
+                    <button onclick="sendWhatsApp()" id="whatsappBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Confirmar Pedido por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/20 to-transparent"></div>
+        
+        <!-- Hero Section -->
+        <div class="container mx-auto px-4 py-8 relative">
+            <nav class="flex justify-between items-center mb-8">
+                <div class="flex items-center gap-3">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota Trihueco" class="w-12 h-12 object-contain">
+                    <span class="font-display text-2xl md:text-3xl">
+                        <span class="text-white">TRIHUECO</span>
+                        <span class="text-secondary"> FAST FOOD</span>
+                    </span>
+                </div>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#menu" class="hover:text-secondary transition-colors">Menu</a>
+                    <a href="#ofertas" class="hover:text-secondary transition-colors">Ofertas</a>
+                    <a href="#contacto" class="hover:text-secondary transition-colors">Contacto</a>
+                </div>
+            </nav>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center min-h-[70vh]">
+                <div class="text-center md:text-left order-2 md:order-1">
+                    <div class="inline-block bg-primary/20 border border-primary/50 rounded-full px-4 py-2 mb-4">
+                        <span class="flex items-center gap-2 text-sm">
+                            <i data-lucide="clock" class="w-4 h-4 text-secondary"></i>
+                            <span>19:00 a 24:00 hrs - Todos los dias</span>
+                        </span>
+                    </div>
+                    
+                    <h1 class="font-display text-5xl md:text-7xl mb-4 leading-tight">
+                        <span class="text-white">RAPIDO,</span><br>
+                        <span class="text-secondary glow-text">SABROSO</span><br>
+                        <span class="text-primary">Y AL MEJOR</span><br>
+                        <span class="text-white">PRECIO</span>
+                    </h1>
+                    
+                    <p class="text-gray-300 text-lg mb-6 max-w-md mx-auto md:mx-0">
+                        Los mejores completos, papas fritas, handrolls y mas en Los Alamos. Haz tu pedido ahora!
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#menu" class="bg-primary hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 card-hover">
+                            <i data-lucide="utensils" class="w-5 h-5"></i>
+                            Ver Menu
+                        </a>
+                        <a href="https://wa.me/56957627097" target="_blank" class="bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-dark font-semibold px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            WhatsApp
+                        </a>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mt-8 justify-center md:justify-start">
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary"></i>
+                            <span>Trihueco 541, Los Alamos</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative order-1 md:order-2 flex justify-center">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-full blur-3xl opacity-30 animate-pulse"></div>
+                        <!-- Hero Image with Mascot and Food -->
+                        <div class="relative">
+                            <img src="images/background.jpeg" alt="Ha Ha Handroll - Nuestro plato estrella" class="relative w-full max-w-md rounded-3xl shadow-2xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mascot Promo Banner -->
+    <section class="py-8 bg-gradient-to-r from-secondary/20 via-primary/20 to-secondary/20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-32 h-32 object-contain float-animation">
+                <div class="text-center md:text-left">
+                    <div class="bg-secondary text-dark px-6 py-3 rounded-2xl inline-block mascot-speech mb-4">
+                        <p class="font-display text-2xl">PRUEBA NUESTRO HANDROLL A SOLO $3.000!</p>
+                    </div>
+                    <p class="text-gray-300">Incluye soya - Disponible todos los dias de 19:00 a 24:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slider Section -->
+    <section class="py-12 bg-gradient-to-r from-dark via-primary/10 to-dark overflow-hidden">
+        <div class="container mx-auto px-4 mb-8">
+            <h2 class="font-display text-3xl md:text-4xl text-center">
+                <span class="text-white">NUESTROS</span>
+                <span class="text-secondary"> FAVORITOS</span>
+            </h2>
+        </div>
+        <div class="slider-container">
+            <div class="slider-track">
+                <!-- First set -->
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/completo-italiano.png" alt="Completo Italiano" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Completo Italiano</h3>
+                            <p class="text-gray-400 text-sm">Con palta, tomate y mayo</p>
+                            <p class="text-primary font-bold mt-2">$2.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/papas-fritas-chicas.png" alt="Papas Fritas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Papas Fritas</h3>
+                            <p class="text-gray-400 text-sm">Crujientes y doradas</p>
+                            <p class="text-primary font-bold mt-2">Desde $1.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Handroll</h3>
+                            <p class="text-gray-400 text-sm">Fresco y delicioso + soya</p>
+                            <p class="text-primary font-bold mt-2">$3.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/empanadas4.png" alt="Empanadas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Empanadas</h3>
+                            <p class="text-gray-400 text-sm">Varios sabores</p>
+                            <p class="text-primary font-bold mt-2">$1.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/salchipapas.png" alt="Salchipapas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Salchipapas</h3>
+                            <p class="text-gray-400 text-sm">Papas + salchicha</p>
+                            <p class="text-primary font-bold mt-2">Desde $1.500</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/sopaipillas2.png" alt="Sopaipillas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Sopaipillas</h3>
+                            <p class="text-gray-400 text-sm">Recien hechas</p>
+                            <p class="text-primary font-bold mt-2">2 x $1.000</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Duplicate for infinite scroll -->
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/completo-italiano.png" alt="Completo Italiano" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Completo Italiano</h3>
+                            <p class="text-gray-400 text-sm">Con palta, tomate y mayo</p>
+                            <p class="text-primary font-bold mt-2">$2.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/papas-fritas-chicas.png" alt="Papas Fritas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Papas Fritas</h3>
+                            <p class="text-gray-400 text-sm">Crujientes y doradas</p>
+                            <p class="text-primary font-bold mt-2">Desde $1.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Handroll</h3>
+                            <p class="text-gray-400 text-sm">Fresco y delicioso + soya</p>
+                            <p class="text-primary font-bold mt-2">$3.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/empanadas4.png" alt="Empanadas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Empanadas</h3>
+                            <p class="text-gray-400 text-sm">Varios sabores</p>
+                            <p class="text-primary font-bold mt-2">$1.000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/salchipapas.png" alt="Salchipapas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Salchipapas</h3>
+                            <p class="text-gray-400 text-sm">Papas + salchicha</p>
+                            <p class="text-primary font-bold mt-2">Desde $1.500</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-72 mx-4">
+                    <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
+                        <div class="h-48 overflow-hidden">
+                            <img src="images/sopaipillas2.png" alt="Sopaipillas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-display text-xl text-secondary">Sopaipillas</h3>
+                            <p class="text-gray-400 text-sm">Recien hechas</p>
+                            <p class="text-primary font-bold mt-2">2 x $1.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-20 h-20 object-contain bounce-animation">
+                    <h2 class="font-display text-4xl md:text-5xl">
+                        <span class="text-white">NUESTRO</span>
+                        <span class="text-secondary"> MENU</span>
+                    </h2>
+                </div>
+                <p class="text-gray-400">Selecciona tus productos favoritos y agregalos al pedido</p>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="filterCategory('all')" class="category-btn active bg-primary text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="all">
+                    <i data-lucide="grid-3x3" class="w-4 h-4 inline mr-2"></i>Todos
+                </button>
+                <button onclick="filterCategory('completos')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="completos">
+                    <i data-lucide="utensils" class="w-4 h-4 inline mr-2"></i>Completos
+                </button>
+                <button onclick="filterCategory('fritos')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="fritos">
+                    <i data-lucide="flame" class="w-4 h-4 inline mr-2"></i>Fritos
+                </button>
+                <button onclick="filterCategory('empanadas')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="empanadas">
+                    <i data-lucide="cookie" class="w-4 h-4 inline mr-2"></i>Empanadas
+                </button>
+                <button onclick="filterCategory('bebidas')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="bebidas">
+                    <i data-lucide="cup" class="w-4 h-4 inline mr-2"></i>Bebidas
+                </button>
+                <button onclick="filterCategory('ofertas')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="ofertas">
+                    <i data-lucide="tag" class="w-4 h-4 inline mr-2"></i>Ofertas
+                </button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Ofertas -->
+                <div id="ofertas" class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-primary relative" data-category="ofertas">
+                    <div class="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-bold z-10">
+                        OFERTA ESPECIAL
+                    </div>
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanadas12-oferta.png" alt="12 Empanadas Oferta" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">12 Empanadas x $5000</h3>
+                        <p class="text-gray-400 text-sm mb-3">Calentitas</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('12 Empanadas x 5000', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ofertas" class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-primary relative" data-category="ofertas">
+                    <div class="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-bold z-10">
+                        OFERTA ESPECIAL
+                    </div>
+                    <div class="h-40 overflow-hidden mt-6">
+                        <img src="images/sopaipillas2-teocafe-oferta.png" alt="Combo Sopaipillas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Combo Sopaipillas</h3>
+                        <p class="text-gray-400 text-sm mb-3">2 sopaipillas + te o cafe</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <button onclick="addToCart('Combo Sopaipillas + Te/Cafe', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Completos -->
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/hot-dog.png" alt="Hot Dog" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Hot Dog</h3>
+                        <p class="text-gray-400 text-sm mb-3">Clasico con mostaza y ketchup</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Hot Dog', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-chucrut.png" alt="Completo Chucrut" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo Chucrut</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con chucrut, mayo y mostaza</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <button onclick="addToCart('Completo Chucrut', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-secondary relative" data-category="completos">
+                    <div class="absolute top-2 right-2 bg-secondary text-dark text-xs font-bold px-2 py-1 rounded-full z-10">Popular</div>
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-italiano.png" alt="Italiano" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Italiano</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con palta, tomate y mayo</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('Italiano', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-dinamico.png" alt="Completo con Dinámico" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo con Dinámico</h3>
+                        <p class="text-gray-400 text-sm mb-3">Carne, palta y salsa dinámica</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('Completo con Dinámico', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-queso.png" alt="Completo con Queso" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo con Queso</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con queso extra y mayo</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$3.000</span>
+                            <button onclick="addToCart('Completo con Queso', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-choclos.png" alt="Completo con Choclos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo con Choclos</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con choclos y mayonesa</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('Completo con Choclos', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-champinon.png" alt="Completo con Champiñones" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo con Champiñones</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con champiñones salteados</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('Completo con Champiñones', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fritos -->
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/salchipapas.png" alt="Salchipapas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Salchipapas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Papas fritas con salchicha</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <button onclick="addToCart('Salchipapas', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/sopaipillas2.png" alt="Sopaipillas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Sopaipillas (2 unidades)</h3>
+                        <p class="text-gray-400 text-sm mb-3">Recien hechas y calentitas</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Sopaipillas x2', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-secondary relative" data-category="fritos">
+                    <div class="absolute top-2 right-2 bg-secondary text-dark text-xs font-bold px-2 py-1 rounded-full z-10">Popular</div>
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Handroll</h3>
+                        <p class="text-gray-400 text-sm mb-3">Incluye soya</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$3.000</span>
+                            <button onclick="addToCart('Handroll + Soya', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/arrollados4.png" alt="Arrollados Primavera Fritos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Arrollados Primavera x 4</h3>
+                        <p class="text-gray-400 text-sm mb-3">4 unidades para compartir</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Arrollados Primavera Fritos 4x', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/papas-fritas-chicas.png" alt="Papas Fritas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Papas Fritas Chicas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Crujientes y doradas</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Papas Fritas', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/papas-fritas-medianas.png" alt="Papas Fritas Medianas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Papas Fritas Medianas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Tamaño mediano, crujientes</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('Papas Fritas Medianas', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/papas-fritas-grandes.png" alt="Papas Fritas Grandes" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Papas Fritas Grandes</h3>
+                        <p class="text-gray-400 text-sm mb-3">Porcion grande para compartir</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$3.000</span>
+                            <button onclick="addToCart('Papas Fritas Grandes', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bebidas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bebida.png" alt="Bebidas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bebidas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Coca Cola, Fanta o Sprite</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$500</span>
+                            <button onclick="addToCart('Bebida (Coca Cola / Fanta / Sprite)', 500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bebidas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/teocafe.png" alt="Te o Cafe" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Té o Café</h3>
+                        <p class="text-gray-400 text-sm mb-3">Para acompañar tu pedido</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Té o Café', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empanadas -->
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="empanadas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanada-pino.png" alt="Empanada de Pino" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Empanada de Pino</h3>
+                        <p class="text-gray-400 text-sm mb-3">Tradicional chilena</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Empanada de Pino', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="empanadas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanada-queso.png" alt="Empanada de Queso" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Empanada de Queso</h3>
+                        <p class="text-gray-400 text-sm mb-3">Rellena de queso derretido</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Empanada de Queso', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="empanadas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanada-napolitana.png" alt="Empanada Napolitana" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Empanada Napolitana</h3>
+                        <p class="text-gray-400 text-sm mb-3">Jamon, queso y tomate</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Empanada Napolitana', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="empanadas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanadas4.png" alt="Empanadas Coctel" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Empanaditas 4 x $1000</h3>
+                        <p class="text-gray-400 text-sm mb-3">Deliciosas mini empanadas tamaño coctel</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$1.000</span>
+                            <button onclick="addToCart('Empanadas Coctel 4x', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Mascot CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-primary/30 via-dark to-secondary/30 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="text-center md:text-left flex-1">
+                    <h2 class="font-display text-4xl md:text-5xl text-white mb-4">
+                        QUE ESPERAS?
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-6">
+                        Haz tu pedido ahora y retiralo en nuestro local. Sin filas, sin esperas!
+                    </p>
+                    <a href="https://wa.me/56957627097" target="_blank" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 text-lg">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Pedir por WhatsApp
+                    </a>
+                </div>
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-secondary/20 rounded-full blur-2xl"></div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota motivando" class="relative w-48 md:w-64 object-contain float-animation">
+                    <div class="absolute -top-4 -right-4 bg-secondary text-dark px-4 py-2 rounded-xl font-display text-lg rotate-12">
+                        PEDILO YA!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-16 bg-gradient-to-b from-dark via-primary/5 to-dark">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="font-display text-4xl md:text-5xl mb-4">
+                    <span class="text-white">ENCUENTRANOS</span>
+                </h2>
+                <p class="text-gray-400">Te esperamos con hambre!</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <!-- Location -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="map-pin" class="w-8 h-8 text-primary"></i>
+                    </div>
+                    <h3 class="font-display text-xl text-secondary mb-2">Ubicacion</h3>
+                    <p class="text-gray-300">Trihueco 541</p>
+                    <p class="text-gray-400">Los Alamos, Chile</p>
+                </div>
+
+                <!-- Hours -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="clock" class="w-8 h-8 text-secondary"></i>
+                    </div>
+                    <h3 class="font-display text-xl text-secondary mb-2">Horario</h3>
+                    <p class="text-gray-300">19:00 - 24:00</p>
+                    <p class="text-gray-400">Todos los dias</p>
+                </div>
+
+                <!-- Phone -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-6 text-center card-hover">
+                    <div class="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </div>
+                    <h3 class="font-display text-xl text-secondary mb-2">WhatsApp</h3>
+                    <a href="https://wa.me/56957627097" target="_blank" class="text-gray-300 hover:text-green-500 transition-colors">+56 9 5762 7097</a>
+                    <p class="text-gray-400">Pedidos directos</p>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="mt-12 text-center">
+                <p class="text-gray-400 mb-4">Siguenos en redes sociales</p>
+                <div class="flex justify-center gap-4">
+                    <a href="https://www.facebook.com/profile.php?id=61550785499095&locale=es_LA" target="_blank" class="w-12 h-12 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 card-hover">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/trihueco_fastfood" target="_blank" class="w-12 h-12 bg-gray-800 hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 rounded-full flex items-center justify-center transition-all duration-300 card-hover">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-10 h-10 object-contain">
+                    <span class="font-display text-xl">
+                        <span class="text-white">TRIHUECO</span>
+                        <span class="text-secondary"> FAST FOOD</span>
+                    </span>
+                </div>
+                <p class="text-gray-500 text-sm">
+                    2024 Trihueco Fast Food. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Cart state
+        let cart = [];
+
+        // Add to cart function
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            
+            updateCartUI();
+            showAddedFeedback();
+        }
+
+        // Show feedback when item is added
+        function showAddedFeedback() {
+            const btn = document.getElementById('floatingCartBtn');
+            btn.classList.add('scale-110');
+            setTimeout(() => btn.classList.remove('scale-110'), 200);
+        }
+
+        // Update cart quantity
+        function updateQuantity(name, delta) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.name !== name);
+                }
+            }
+            updateCartUI();
+        }
+
+        // Update cart UI
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartEmptyMascot = document.getElementById('cartEmptyMascot');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Update count badge
+            if (totalItems > 0) {
+                cartCount.textContent = totalItems;
+                cartCount.classList.remove('hidden');
+                cartEmptyMascot.classList.add('hidden');
+                whatsappBtn.disabled = false;
+            } else {
+                cartCount.classList.add('hidden');
+                cartEmptyMascot.classList.remove('hidden');
+                whatsappBtn.disabled = true;
+            }
+            
+            // Update total
+            cartTotal.textContent = '$' + totalPrice.toLocaleString('es-CL');
+            
+            // Update items list
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="bg-gray-800 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-white">${item.name}</h4>
+                            <p class="text-secondary font-bold">$${(item.price * item.quantity).toLocaleString('es-CL')}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('${item.name}', -1)" class="w-8 h-8 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors">
+                                <i data-lucide="minus" class="w-4 h-4"></i>
+                            </button>
+                            <span class="font-bold w-6 text-center">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.name}', 1)" class="w-8 h-8 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Re-initialize icons for new elements
+                lucide.createIcons();
+            }
+        }
+
+        // Toggle cart modal
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Send WhatsApp message
+        function sendWhatsApp() {
+            if (cart.length === 0) return;
+            
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            let message = 'Hola! Quiero hacer un pedido:\n\n';
+            cart.forEach(item => {
+                message += `- ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-CL')}\n`;
+            });
+            message += `\n*TOTAL: $${totalPrice.toLocaleString('es-CL')}*`;
+            message += '\n\n(Pedido para retirar en local)';
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/56957627097?text=${encodedMessage}`, '_blank');
+        }
+
+        // Category filter
+        function filterCategory(category) {
+            const items = document.querySelectorAll('.menu-item');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // Update active button
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-gray-800', 'text-gray-300');
+            });
+            
+            const activeBtn = document.querySelector(`[data-category="${category}"]`);
+            activeBtn.classList.add('active', 'bg-primary', 'text-white');
+            activeBtn.classList.remove('bg-gray-800', 'text-gray-300');
+            
+            // Filter items
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Add fadeIn animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
