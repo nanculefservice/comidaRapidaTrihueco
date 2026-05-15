@@ -172,7 +172,7 @@
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota Trihueco" class="w-12 h-12 object-contain">
                     <span class="font-display text-2xl md:text-3xl">
                         <span class="text-white">TRIHUECO</span>
-                        <span class="text-secondary"> FAST FOOD</span>
+                        <span class="text-secondary">CARRO COMIDA</span>
                     </span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
@@ -199,7 +199,10 @@
                     </h1>
                     
                     <p class="text-gray-300 text-lg mb-6 max-w-md mx-auto md:mx-0">
-                        Los mejores completos, papas fritas, handrolls y mas en Los Alamos. Haz tu pedido ahora!
+                        Conoce mi emprendimiento "Carro Comida" en Los Alamos. Los mejores completos, papas fritas, handrolls y mas. Haz tu pedido ahora!
+                    </p>
+                    <p class="text-gray-300 text-lg mb-6 max-w-md mx-auto md:mx-0">
+                        ¡Proximamente delivery!
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -448,6 +451,26 @@
             <!-- Menu Grid -->
             <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <!-- Ofertas -->
+                 <div id="ofertas" class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-primary relative" data-category="ofertas">
+                    <div class="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-bold z-10">
+                        OFERTA ESPECIAL
+                    </div>
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/empanadas12-oferta.png" alt="12 Empanadas Oferta" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">12 Sopaipillas x $5000</h3>
+                        <p class="text-gray-400 text-sm mb-3">Calentitas</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('12 Sopaipillas x 5000', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="ofertas" class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-primary relative" data-category="ofertas">
                     <div class="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-bold z-10">
                         OFERTA ESPECIAL
@@ -456,11 +479,11 @@
                         <img src="images/empanadas12-oferta.png" alt="12 Empanadas Oferta" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">12 Empanadas x $5000</h3>
-                        <p class="text-gray-400 text-sm mb-3">Calentitas</p>
+                        <h3 class="font-display text-xl text-white mb-1">12 Empanadas x $7000</h3>
+                        <p class="text-gray-400 text-sm mb-3">Empandas de Queso Calentitas</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$5.000</span>
-                            <button onclick="addToCart('12 Empanadas x 5000', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$7.000</span>
+                            <button onclick="addToCart('12 Empanadas x 6000', 6000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -545,7 +568,7 @@
                         <img src="images/completo-dinamico.png" alt="Completo con Dinámico" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">Completo con Dinámico</h3>
+                        <h3 class="font-display text-xl text-white mb-1">Completo AS</h3>
                         <p class="text-gray-400 text-sm mb-3">Carne, palta y salsa dinámica</p>
                         <div class="flex items-center justify-between">
                             <span class="text-secondary font-bold text-xl">$2.000</span>
@@ -597,7 +620,7 @@
                     </div>
                     <div class="p-5">
                         <h3 class="font-display text-xl text-white mb-1">Completo con Champiñones</h3>
-                        <p class="text-gray-400 text-sm mb-3">Con champiñones salteados</p>
+                        <p class="text-gray-400 text-sm mb-3">Con champiñones</p>
                         <div class="flex items-center justify-between">
                             <span class="text-secondary font-bold text-xl">$2.000</span>
                             <button onclick="addToCart('Completo con Champiñones', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
@@ -617,7 +640,7 @@
                         <h3 class="font-display text-xl text-white mb-1">Salchipapas</h3>
                         <p class="text-gray-400 text-sm mb-3">Papas fritas con salchicha</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <span class="text-secondary font-bold text-xl">Desde $1.500</span>
                             <button onclick="addToCart('Salchipapas', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
@@ -729,14 +752,48 @@
 
                 <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bebidas">
                     <div class="h-40 overflow-hidden">
-                        <img src="images/bebida.png" alt="Bebidas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="images/bebidas.png" alt="Bebidas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
                         <h3 class="font-display text-xl text-white mb-1">Bebidas</h3>
-                        <p class="text-gray-400 text-sm mb-3">Coca Cola, Fanta o Sprite</p>
+                        <p class="text-gray-400 text-sm mb-3">Bebidas Fruna</p>
                         <div class="flex items-center justify-between">
                             <span class="text-secondary font-bold text-xl">$500</span>
                             <button onclick="addToCart('Bebida (Coca Cola / Fanta / Sprite)', 500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bebidas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bebidas.png" alt="Bebidas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bebidas Express</h3>
+                        <p class="text-gray-400 text-sm mb-3">Bebida para tomar en un momento</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2000</span>
+                            <button onclick="addToCart('Bebida (Coca Cola / Fanta / Sprite)', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bebidas">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bebida3.jpg" alt="Bebidas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bebidas Familiar 3 lts</h3>
+                        <p class="text-gray-400 text-sm mb-3">Bebida fruna para compartir</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$2000</span>
+                            <button onclick="addToCart('Bebida (Coca Cola / Fanta / Sprite)', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
