@@ -7,7 +7,7 @@ Una solución digital moderna para el negocio de comida rápida **Trihueco Fast 
 
 ## 🚀 Sitio Web
 Puedes ver el despliegue en vivo aquí:
-**[https://nanculefservice.github.io/servitecnicomaq/](https://nanculefservice.github.io/comidaRapidaTrihueco/)**
+**[https://nanculefservice.github.io/comidaRapidaTrihueco/](https://nanculefservice.github.io/comidaRapidaTrihueco/)**
 
 ## 🎯 Objetivo del Proyecto
 
