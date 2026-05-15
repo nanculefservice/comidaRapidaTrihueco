@@ -5,9 +5,9 @@
 
 Una solución digital moderna para el negocio de comida rápida **Trihueco Fast Food**, ubicado en Los Álamos. El sitio funciona como una carta digital interactiva que facilita la visualización de productos y centraliza los pedidos a través de WhatsApp.
 
-## 📸 Vista Previa
-
-*(Aquí puedes insertar el link a la imagen que me mostraste o una captura de pantalla del sitio en vivo)*
+## 🚀 Sitio Web
+Puedes ver el despliegue en vivo aquí:
+**[https://nanculefservice.github.io/comidaRapidaTrihueco/](https://nanculefservice.github.io/comidaRapidaTrihueco/)**
 
 ## 🎯 Objetivo del Proyecto
 
