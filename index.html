@@ -145,7 +145,7 @@
 
                 <div class="border-t border-gray-700 pt-4 mt-4 space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Tipo de pedido</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Tipo de entrega</label>
                         <div class="grid grid-cols-2 gap-2">
                             <button type="button" onclick="setDeliveryMode('pickup')" id="pickupModeBtn" class="mode-btn bg-primary text-white rounded-xl py-2 px-3 text-sm font-semibold">Retiro</button>
                             <button type="button" onclick="setDeliveryMode('delivery')" id="deliveryModeBtn" class="mode-btn bg-gray-800 text-gray-300 rounded-xl py-2 px-3 text-sm font-semibold">Con reparto</button>
@@ -1300,8 +1300,10 @@
 
             let message = 'Hola! Quiero hacer un pedido:\n\n';
             cart.forEach(item => {
-                message += `- ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-CL')}\n`;
+                message += `• ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-CL')}\n`;
             });
+
+            message += '\nTipo de pedido: ' + (selectedDeliveryMode === 'delivery' ? 'Con reparto' : 'Retiro en local') + '\n';
 
             if (selectedDeliveryMode === 'delivery') {
                 if (!selectedLocality) {
@@ -1312,17 +1314,15 @@
                     alert('Debes ingresar la dirección de entrega.');
                     return;
                 }
-                message += `\n- Localidad: ${selectedLocality} (+$${deliveryFee.toLocaleString('es-CL')})\n`;
-                message += `- Dirección: ${address}\n`;
-            } else {
-                message += '\n- Tipo de pedido: Retiro en local\n';
+                message += `Localidad: ${selectedLocality} (+$${deliveryFee.toLocaleString('es-CL')})\n`;
+                message += `Dirección: ${address}\n`;
             }
 
-            message += `\n*SUBTOTAL: $${subtotal.toLocaleString('es-CL')}*`;
+            message += `\nSUBTOTAL: $${subtotal.toLocaleString('es-CL')}\n`;
             if (deliveryFee > 0) {
-                message += `\n*ENVÍO: $${deliveryFee.toLocaleString('es-CL')}*`;
+                message += `ENVÍO: $${deliveryFee.toLocaleString('es-CL')}\n`;
             }
-            message += `\n*TOTAL: $${totalPrice.toLocaleString('es-CL')}*`;
+            message += `TOTAL: $${totalPrice.toLocaleString('es-CL')}`;
 
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/56957627097?text=${encodedMessage}`, '_blank');
