@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trihueco Fast Food - Rapido, Sabroso y al Mejor Precio</title>
+    <title>Flor de Agua - Comida al Paso</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,13 +142,38 @@
                 
                 <div id="cartItems" class="flex-1 overflow-y-auto space-y-4">
                 </div>
-                
-                <div class="border-t border-gray-700 pt-4 mt-4">
-                    <div class="flex justify-between items-center mb-4">
+
+                <div class="border-t border-gray-700 pt-4 mt-4 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Tipo de pedido</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="setDeliveryMode('pickup')" id="pickupModeBtn" class="mode-btn bg-primary text-white rounded-xl py-2 px-3 text-sm font-semibold">Retiro</button>
+                            <button type="button" onclick="setDeliveryMode('delivery')" id="deliveryModeBtn" class="mode-btn bg-gray-800 text-gray-300 rounded-xl py-2 px-3 text-sm font-semibold">Con reparto</button>
+                        </div>
+                    </div>
+
+                    <div id="localitySection" class="hidden">
+                        <label for="localitySelect" class="block text-sm font-medium text-gray-300 mb-2">Localidad de entrega</label>
+                        <select id="localitySelect" onchange="setDeliveryLocality(this.value)" class="w-full rounded-xl border border-gray-600 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Selecciona una zona</option>
+                            <option value="Antihuala">Antihuala - $3.000</option>
+                            <option value="Temuco Chico">Temuco chico - $3.000</option>
+                            <option value="Cerro Alto">Cerro alto - $2.500</option>
+                            <option value="Tres Pinos">Tres pinos - $2.500</option>
+                            <option value="Los Álamos">Los Álamos - $2.000</option>
+                        </select>
+                    </div>
+
+                    <div id="addressSection" class="hidden">
+                        <label for="deliveryAddress" class="block text-sm font-medium text-gray-300 mb-2">Dirección exacta</label>
+                        <textarea id="deliveryAddress" rows="2" placeholder="Escribe la dirección donde quieres recibir el pedido" class="w-full rounded-xl border border-gray-600 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    </div>
+
+                    <div class="flex justify-between items-center">
                         <span class="text-lg font-semibold">Total:</span>
                         <span id="cartTotal" class="text-2xl font-display text-secondary">$0</span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-4 text-center">
+                    <p id="deliverySummary" class="text-xs text-gray-400 mb-2 text-center">
                         <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
                         Pedido para retirar en local (Sin Delivery)
                     </p>
@@ -169,10 +194,10 @@
         <div class="container mx-auto px-4 py-8 relative">
             <nav class="flex justify-between items-center mb-8">
                 <div class="flex items-center gap-3">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota Trihueco" class="w-12 h-12 object-contain">
+                    <img src="images/flor-de-agua.png" alt="Mascota Flor de Agua" class="w-12 h-12 object-contain">
                     <span class="font-display text-2xl md:text-3xl">
-                        <span class="text-white">TRIHUECO</span>
-                        <span class="text-secondary">CARRO COMIDA</span>
+                        <span class="text-white">FLOR DE AGUA</span>
+                        <span class="text-secondary">- COMIDA AL PASO</span>
                     </span>
                 </div>
                 <div class="hidden md:flex items-center gap-6">
@@ -192,17 +217,16 @@
                     </div>
                     
                     <h1 class="font-display text-5xl md:text-7xl mb-4 leading-tight">
-                        <span class="text-white">RAPIDO,</span><br>
-                        <span class="text-secondary glow-text">SABROSO</span><br>
-                        <span class="text-primary">Y AL MEJOR</span><br>
-                        <span class="text-white">PRECIO</span>
+                        <span class="text-primary">RÁPIDA,</span><br>
+                        <span class="text-white">SABROSA Y</span><br>
+                        <span class="text-secondary">A DOMICILIO</span>
                     </h1>
                     
                     <p class="text-gray-300 text-lg mb-6 max-w-md mx-auto md:mx-0">
-                        Conoce mi emprendimiento "Carro Comida" en Los Alamos. Los mejores completos, papas fritas, handrolls y mas. Haz tu pedido ahora!
+                        Ahora atendemos con reparto en distintas localidades. Pide tus completos, salchipapas, bowls y más desde Flor de Agua.
                     </p>
                     <p class="text-gray-300 text-lg mb-6 max-w-md mx-auto md:mx-0">
-                        ¡Proximamente delivery!
+                        Delivery disponible según sector y valor de la zona.
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -229,7 +253,7 @@
                         <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-full blur-3xl opacity-30 animate-pulse"></div>
                         <!-- Hero Image with Mascot and Food -->
                         <div class="relative">
-                            <img src="images/background.jpeg" alt="Ha Ha Handroll - Nuestro plato estrella" class="relative w-full max-w-md rounded-3xl shadow-2xl">
+                            <img src="images/background2.png" alt="Ha Ha Handroll - Nuestro plato estrella" class="relative w-full max-w-md rounded-3xl shadow-2xl">
                         </div>
                     </div>
                 </div>
@@ -241,12 +265,12 @@
     <section class="py-8 bg-gradient-to-r from-secondary/20 via-primary/20 to-secondary/20">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-32 h-32 object-contain float-animation">
+                <img src="images/reparto.png" alt="Mascota" class="w-32 h-32 object-contain float-animation">
                 <div class="text-center md:text-left">
                     <div class="bg-secondary text-dark px-6 py-3 rounded-2xl inline-block mascot-speech mb-4">
-                        <p class="font-display text-2xl">PRUEBA NUESTRO HANDROLL A SOLO $3.000!</p>
+                        <p class="font-display text-2xl">AHORA CON DESPACHO A CUALQUIER SECTOR DE LA COMUNA</p>
                     </div>
-                    <p class="text-gray-300">Incluye soya - Disponible todos los dias de 19:00 a 24:00</p>
+                    <p class="text-gray-300">Disponible todos los dias de 19:00 a 24:00</p>
                 </div>
             </div>
         </div>
@@ -293,9 +317,9 @@
                             <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                         </div>
                         <div class="p-4">
-                            <h3 class="font-display text-xl text-secondary">Handroll</h3>
+                            <h3 class="font-display text-xl text-secondary">HaHaHandroll</h3>
                             <p class="text-gray-400 text-sm">Fresco y delicioso + soya</p>
-                            <p class="text-primary font-bold mt-2">$3.000</p>
+                            <p class="text-primary font-bold mt-2">$2.000</p>
                         </div>
                     </div>
                 </div>
@@ -319,7 +343,7 @@
                         <div class="p-4">
                             <h3 class="font-display text-xl text-secondary">Salchipapas</h3>
                             <p class="text-gray-400 text-sm">Papas + salchicha</p>
-                            <p class="text-primary font-bold mt-2">Desde $1.500</p>
+                            <p class="text-primary font-bold mt-2">Desde $2.000</p>
                         </div>
                     </div>
                 </div>
@@ -363,12 +387,12 @@
                 <div class="flex-shrink-0 w-72 mx-4">
                     <div class="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover">
                         <div class="h-48 overflow-hidden">
-                            <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <img src="images/handroll.png" alt="HaHaHandroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                         </div>
                         <div class="p-4">
-                            <h3 class="font-display text-xl text-secondary">Handroll</h3>
+                            <h3 class="font-display text-xl text-secondary">HaHaHandroll</h3>
                             <p class="text-gray-400 text-sm">Fresco y delicioso + soya</p>
-                            <p class="text-primary font-bold mt-2">$3.000</p>
+                            <p class="text-primary font-bold mt-2">$2.000</p>
                         </div>
                     </div>
                 </div>
@@ -446,6 +470,9 @@
                 <button onclick="filterCategory('ofertas')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="ofertas">
                     <i data-lucide="tag" class="w-4 h-4 inline mr-2"></i>Ofertas
                 </button>
+                <button onclick="filterCategory('bowls')" class="category-btn bg-gray-800 text-gray-300 hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300" data-category="bowls">
+                    <i data-lucide="salad" class="w-4 h-4 inline mr-2"></i>Bowls
+                </button>
             </div>
 
             <!-- Menu Grid -->
@@ -519,8 +546,8 @@
                         <h3 class="font-display text-xl text-white mb-1">Hot Dog</h3>
                         <p class="text-gray-400 text-sm mb-3">Clasico con mostaza y ketchup</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$1.000</span>
-                            <button onclick="addToCart('Hot Dog', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <button onclick="addToCart('Hot Dog', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -536,8 +563,8 @@
                         <h3 class="font-display text-xl text-white mb-1">Completo Chucrut</h3>
                         <p class="text-gray-400 text-sm mb-3">Con chucrut, mayo y mostaza</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$1.500</span>
-                            <button onclick="addToCart('Completo Chucrut', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$1.800</span>
+                            <button onclick="addToCart('Completo Chucrut', 1800)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -599,14 +626,14 @@
 
                 <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
                     <div class="h-40 overflow-hidden">
-                        <img src="images/completo-choclos.png" alt="Completo con Choclos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="images/completo-choclos.png" alt="Completo choclo palta" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">Completo con Choclos</h3>
-                        <p class="text-gray-400 text-sm mb-3">Con choclos y mayonesa</p>
+                        <h3 class="font-display text-xl text-white mb-1">Completo choclo palta</h3>
+                        <p class="text-gray-400 text-sm mb-3">Con choclo y palta</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$2.000</span>
-                            <button onclick="addToCart('Completo con Choclos', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$2.300</span>
+                            <button onclick="addToCart('Completo choclo palta', 2300)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -616,14 +643,31 @@
 
                 <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
                     <div class="h-40 overflow-hidden">
-                        <img src="images/completo-champinon.png" alt="Completo con Champiñones" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="images/completo-champinon.png" alt="Completo con champiñones" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">Completo con Champiñones</h3>
+                        <h3 class="font-display text-xl text-white mb-1">Completo con champiñones</h3>
                         <p class="text-gray-400 text-sm mb-3">Con champiñones</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$2.000</span>
-                            <button onclick="addToCart('Completo con Champiñones', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$3.000</span>
+                            <button onclick="addToCart('Completo con champiñones', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="completos">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/completo-dinamico.png" alt="Completo pollo champiñón" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Completo pollo champiñón</h3>
+                        <p class="text-gray-400 text-sm mb-3">Pollo y champiñones</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$3.500</span>
+                            <button onclick="addToCart('Completo pollo champiñón', 3500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -640,8 +684,8 @@
                         <h3 class="font-display text-xl text-white mb-1">Salchipapas</h3>
                         <p class="text-gray-400 text-sm mb-3">Papas fritas con salchicha</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">Desde $1.500</span>
-                            <button onclick="addToCart('Salchipapas', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">Desde $2.000</span>
+                            <button onclick="addToCart('Salchipapas', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -651,14 +695,14 @@
 
                 <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="fritos">
                     <div class="h-40 overflow-hidden">
-                        <img src="images/sopaipillas2.png" alt="Sopaipillas" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="images/sopaipillas-palta.png" alt="Dos sopaipillas con palta" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">Sopaipillas (2 unidades)</h3>
+                        <h3 class="font-display text-xl text-white mb-1">Dos sopaipillas con palta</h3>
                         <p class="text-gray-400 text-sm mb-3">Recien hechas y calentitas</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$1.000</span>
-                            <button onclick="addToCart('Sopaipillas x2', 1000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$1.500</span>
+                            <button onclick="addToCart('Dos sopaipillas con palta', 1500)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -669,14 +713,14 @@
                 <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover border-2 border-secondary relative" data-category="fritos">
                     <div class="absolute top-2 right-2 bg-secondary text-dark text-xs font-bold px-2 py-1 rounded-full z-10">Popular</div>
                     <div class="h-40 overflow-hidden">
-                        <img src="images/handroll.png" alt="Handroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="images/handroll.png" alt="HaHaHandroll" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display text-xl text-white mb-1">Handroll</h3>
+                        <h3 class="font-display text-xl text-white mb-1">HaHaHandroll</h3>
                         <p class="text-gray-400 text-sm mb-3">Incluye soya</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-secondary font-bold text-xl">$3.000</span>
-                            <button onclick="addToCart('Handroll + Soya', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                            <span class="text-secondary font-bold text-xl">$2.000</span>
+                            <button onclick="addToCart('HaHaHandroll + Soya', 2000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -743,6 +787,96 @@
                         <div class="flex items-center justify-between">
                             <span class="text-secondary font-bold text-xl">$3.000</span>
                             <button onclick="addToCart('Papas Fritas Grandes', 3000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bowls">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bowl.png" alt="Bowl Antihuala" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bowl Antihuala</h3>
+                        <p class="text-gray-400 text-sm mb-3">Base: porotos verdes, carne mechada, palta, queso y tomate.</p>
+                        <p class="text-gray-500 text-xs mb-3">Salsas: aderezo de la casa, salsa verde, ají taki, salsa nachos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('Bowl Antihuala', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bowls">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bowl.png" alt="Bowl Temuco Chico" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bowl Temuco Chico</h3>
+                        <p class="text-gray-400 text-sm mb-3">Base: porotos verdes, carne mechada, palta, queso y tomate.</p>
+                        <p class="text-gray-500 text-xs mb-3">Salsas: aderezo de la casa, salsa verde, ají taki, salsa nachos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('Bowl Temuco Chico', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bowls">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bowl.png" alt="Bowl Cerro Alto" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bowl Cerro Alto</h3>
+                        <p class="text-gray-400 text-sm mb-3">Base: porotos verdes, carne mechada, palta, queso y tomate.</p>
+                        <p class="text-gray-500 text-xs mb-3">Salsas: aderezo de la casa, salsa verde, ají taki, salsa nachos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('Bowl Cerro Alto', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bowls">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bowl.png" alt="Bowl Tres Pinos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bowl Tres Pinos</h3>
+                        <p class="text-gray-400 text-sm mb-3">Base: porotos verdes, carne mechada, palta, queso y tomate.</p>
+                        <p class="text-gray-500 text-xs mb-3">Salsas: aderezo de la casa, salsa verde, ají taki, salsa nachos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('Bowl Tres Pinos', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Anadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl overflow-hidden card-hover" data-category="bowls">
+                    <div class="h-40 overflow-hidden">
+                        <img src="images/bowl.png" alt="Bowl Los Álamos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-xl text-white mb-1">Bowl Los Álamos</h3>
+                        <p class="text-gray-400 text-sm mb-3">Base: porotos verdes, carne mechada, palta, queso y tomate.</p>
+                        <p class="text-gray-500 text-xs mb-3">Salsas: aderezo de la casa, salsa verde, ají taki, salsa nachos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-secondary font-bold text-xl">$5.000</span>
+                            <button onclick="addToCart('Bowl Los Álamos', 5000)" class="bg-primary hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 text-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 Anadir
                             </button>
@@ -901,7 +1035,7 @@
                         QUE ESPERAS?
                     </h2>
                     <p class="text-xl text-gray-300 mb-6">
-                        Haz tu pedido ahora y retiralo en nuestro local. Sin filas, sin esperas!
+                        Haz tu pedido ahora con Delivery o retiralo en nuestro local!
                     </p>
                     <a href="https://wa.me/56957627097" target="_blank" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 text-lg">
                         <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -981,14 +1115,14 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bd6VJFeOnPWJUeNEKpXPde0jfqfHFa.png" alt="Mascota" class="w-10 h-10 object-contain">
+                    <img src="images/flor-de-agua.png" alt="Mascota" class="w-10 h-10 object-contain">
                     <span class="font-display text-xl">
-                        <span class="text-white">TRIHUECO</span>
-                        <span class="text-secondary"> FAST FOOD</span>
+                        <span class="text-white">FLOR DE AGUA</span>
+                        <span class="text-secondary"> COMIDA AL PASO</span>
                     </span>
                 </div>
                 <p class="text-gray-500 text-sm">
-                    2024 Trihueco Fast Food. Todos los derechos reservados.
+                    2026 Flor de Agua - Comida al Paso. Todos los derechos reservados.
                 </p>
             </div>
         </div>
@@ -1000,6 +1134,58 @@
 
         // Cart state
         let cart = [];
+        const deliveryZones = {
+            'Antihuala': 3000,
+            'Temuco Chico': 3000,
+            'Cerro Alto': 2500,
+            'Tres Pinos': 2500,
+            'Los Álamos': 2000
+        };
+        let selectedDeliveryMode = 'pickup';
+        let selectedLocality = '';
+
+        function setDeliveryMode(mode) {
+            selectedDeliveryMode = mode;
+            const pickupBtn = document.getElementById('pickupModeBtn');
+            const deliveryBtn = document.getElementById('deliveryModeBtn');
+            const localitySection = document.getElementById('localitySection');
+            const addressSection = document.getElementById('addressSection');
+
+            if (mode === 'pickup') {
+                pickupBtn.className = 'mode-btn bg-primary text-white rounded-xl py-2 px-3 text-sm font-semibold';
+                deliveryBtn.className = 'mode-btn bg-gray-800 text-gray-300 rounded-xl py-2 px-3 text-sm font-semibold';
+                localitySection.classList.add('hidden');
+                addressSection.classList.add('hidden');
+                selectedLocality = '';
+                document.getElementById('localitySelect').value = '';
+                document.getElementById('deliveryAddress').value = '';
+            } else {
+                pickupBtn.className = 'mode-btn bg-gray-800 text-gray-300 rounded-xl py-2 px-3 text-sm font-semibold';
+                deliveryBtn.className = 'mode-btn bg-primary text-white rounded-xl py-2 px-3 text-sm font-semibold';
+                localitySection.classList.remove('hidden');
+                if (selectedLocality) {
+                    addressSection.classList.remove('hidden');
+                }
+            }
+            updateCartUI();
+        }
+
+        function setDeliveryLocality(locality) {
+            selectedLocality = locality;
+            const addressSection = document.getElementById('addressSection');
+            if (locality) {
+                addressSection.classList.remove('hidden');
+            } else {
+                addressSection.classList.add('hidden');
+                document.getElementById('deliveryAddress').value = '';
+            }
+            updateCartUI();
+        }
+
+        function getDeliveryFee() {
+            if (selectedDeliveryMode !== 'delivery' || !selectedLocality) return 0;
+            return deliveryZones[selectedLocality] || 0;
+        }
 
         // Add to cart function
         function addToCart(name, price) {
@@ -1041,9 +1227,12 @@
             const cartTotal = document.getElementById('cartTotal');
             const cartEmptyMascot = document.getElementById('cartEmptyMascot');
             const whatsappBtn = document.getElementById('whatsappBtn');
+            const deliverySummary = document.getElementById('deliverySummary');
             
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = getDeliveryFee();
+            const totalPrice = subtotal + deliveryFee;
             
             // Update count badge
             if (totalItems > 0) {
@@ -1059,6 +1248,13 @@
             
             // Update total
             cartTotal.textContent = '$' + totalPrice.toLocaleString('es-CL');
+
+            if (selectedDeliveryMode === 'delivery' && selectedLocality) {
+                deliverySummary.innerHTML = `<i data-lucide="info" class="w-4 h-4 inline mr-1"></i> Envío a ${selectedLocality} (+$${deliveryFee.toLocaleString('es-CL')})`;
+            } else {
+                deliverySummary.innerHTML = '<i data-lucide="info" class="w-4 h-4 inline mr-1"></i> Pedido para retirar en local (Sin Delivery)';
+            }
+            lucide.createIcons();
             
             // Update items list
             if (cart.length === 0) {
@@ -1096,16 +1292,38 @@
         // Send WhatsApp message
         function sendWhatsApp() {
             if (cart.length === 0) return;
-            
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = getDeliveryFee();
+            const totalPrice = subtotal + deliveryFee;
+            const address = document.getElementById('deliveryAddress')?.value?.trim() || '';
+
             let message = 'Hola! Quiero hacer un pedido:\n\n';
             cart.forEach(item => {
                 message += `- ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-CL')}\n`;
             });
+
+            if (selectedDeliveryMode === 'delivery') {
+                if (!selectedLocality) {
+                    alert('Debes seleccionar una localidad para entrega.');
+                    return;
+                }
+                if (!address) {
+                    alert('Debes ingresar la dirección de entrega.');
+                    return;
+                }
+                message += `\n- Localidad: ${selectedLocality} (+$${deliveryFee.toLocaleString('es-CL')})\n`;
+                message += `- Dirección: ${address}\n`;
+            } else {
+                message += '\n- Tipo de pedido: Retiro en local\n';
+            }
+
+            message += `\n*SUBTOTAL: $${subtotal.toLocaleString('es-CL')}*`;
+            if (deliveryFee > 0) {
+                message += `\n*ENVÍO: $${deliveryFee.toLocaleString('es-CL')}*`;
+            }
             message += `\n*TOTAL: $${totalPrice.toLocaleString('es-CL')}*`;
-            message += '\n\n(Pedido para retirar en local)';
-            
+
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/56957627097?text=${encodedMessage}`, '_blank');
         }
